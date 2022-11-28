@@ -2,7 +2,7 @@ import express from 'express';
 import multer from "multer";
 import path from 'path';
 
-import { getAllBooks, addBook, handleFileUpload } from '../controllers';
+import { getAllBooks, addBook, getBookById, handleFileUpload } from '../controllers';
 
 const router = express.Router();
 
@@ -22,7 +22,9 @@ const storage = multer.diskStorage({
   
 const upload = multer({ storage: storage })
 
-router.get("/", getAllBooks);
+router.get("/get_books", getAllBooks);
+
+router.get("/get_book/:id", getBookById);
 
 router.post("/add_book", addBook);
 

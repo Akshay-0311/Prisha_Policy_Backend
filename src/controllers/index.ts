@@ -24,8 +24,6 @@ export const addBook = async (req: Request, res: Response) => {
   const { name, author, read_time, details, thumbnail_name, pdf_name } =
     req.body;
 
-  console.log(req.body);
-
   try {
     const added_book = await pool.query(
       "INSERT INTO books(name, author, read_time, details, thumbnail_name, pdf_name) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
@@ -37,6 +35,20 @@ export const addBook = async (req: Request, res: Response) => {
     console.log(err);
   }
 };
+
+export const addRatingById = async (req: Request, res : Response) => {
+    const {id, rate} = req.params;
+
+    try {
+        const added_rating = await pool.query(
+          "UPDATE books SET rating = $1 WHERE id = $2 RETURNING *", [rate, id]
+        )
+        res.status(201).json({ added_rating: added_rating.rows[0] });
+    }
+    catch(err) {
+      console.log(err);
+    }
+}
 
 export const handleFileUpload = (req: Request, res: Response) => {
   console.log(`Ping 123!!`);

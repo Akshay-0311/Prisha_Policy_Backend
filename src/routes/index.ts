@@ -2,7 +2,7 @@ import express from 'express';
 import multer from "multer";
 import path from 'path';
 
-import { getAllBooks, addBook, getBookById, handleFileUpload } from '../controllers';
+import { getAllBooks, addBook, getBookById, addRatingById, handleFileUpload } from '../controllers';
 
 const router = express.Router();
 
@@ -28,6 +28,10 @@ router.get("/get_book/:id", getBookById);
 
 router.post("/add_book", addBook);
 
+router.post("/add_rating/:id/:rate", addRatingById);
+
 router.post("/upload_file", upload.single('file'),handleFileUpload);
+
+
 
 export default router;

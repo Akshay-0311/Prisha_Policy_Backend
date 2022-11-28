@@ -10,6 +10,30 @@ export const getAllBooks = async (req: Request, res: Response) => {
   }
 };
 
-export const addBook = (req: Request, res: Response) => {
-  res.status(201).json({ msg: "Hi!! This is my world Book" });
+export const addBook = async (req: Request, res: Response) => {
+    const {
+        name,
+        author,
+        read_time,
+        details,
+        thumbnail_name,
+        pdf_name
+    } = req.body;
+
+    try {
+        const added_book = await pool.query(
+          "INSERT INTO books(name, author, read_time, details, thumbnail_name, pdf_name) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+          [name, author, read_time, details, thumbnail_name, pdf_name]
+        );
+    
+        res.status(201).json({ added_book : added_book.rows[0] });
+      }
+      catch(err) {
+        console.log(err);
+      }
 };
+
+export const handleFileUpload = (req : Request, res : Response) => {
+    console.log(`Ping 123!!`);
+    res.status(201).json({msg : "Succesfully Uploaded!"})
+}
